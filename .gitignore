@@ -1,0 +1,10 @@
+zerogame/Library/
+zerogame/Temp/
+zerogame/Assets/UnityVS/
+zerogame/Assets/UnityVS.meta
+zerogame/*.sln
+*.csproj
+*.suo
+zerogame/obj/
+.DS_Store
+*.userprefs
