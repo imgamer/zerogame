@@ -4,11 +4,11 @@ class Main: MonoBehaviour
 {
     void Awake()
     {
-        Debug.Log("Game awake...");
+        SFDebug.Log("Game awake...");
     }
 
     void Start()
     {
-        Debug.Log("Game start...");
+        SFDebug.Log("Game start...");
     }
 }
