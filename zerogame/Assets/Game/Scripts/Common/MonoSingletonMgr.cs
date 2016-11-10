@@ -3,17 +3,17 @@ using System;
 using System.Collections;
 
 
-
+// 维护全局组件容器"Singleton"游戏对象
 public class MonoSingletonMgr
 {
-	static readonly string SINGLETON_NAME = "Singleton";
+	public static readonly string SINGLETON_GAMEOBJECT_NAME = "Singleton";
 
 	private static MonoSingletonMgr _instance;
 	private static GameObject _singleton;
 
 	private MonoSingletonMgr()
 	{
-		SFDebug.Log("MonoSingletonMgr construction...");
+		SFDebug.Log("MonoSingletonMgr constructed...");
 	}
 
 	public static void Create()
@@ -22,15 +22,15 @@ public class MonoSingletonMgr
 		{
 			_instance = new MonoSingletonMgr();
 
-			GameObject singleton = GameObject.Find(SINGLETON_NAME);
+			GameObject singleton = GameObject.Find(SINGLETON_GAMEOBJECT_NAME);
 			if(singleton == null)
 			{
-				singleton = new GameObject(SINGLETON_NAME);
-				_instance._singleton = singleton;
-				Object.DontDestroyOnLoad(singleton);
+				singleton = new GameObject(SINGLETON_GAMEOBJECT_NAME);
+                MonoSingletonMgr._singleton = singleton;
+				GameObject.DontDestroyOnLoad(singleton);
 			}
 
-			InitSingleton();
+            _instance.InitSingleton();
 		}
 	}
 
@@ -46,6 +46,16 @@ public class MonoSingletonMgr
 			return MonoSingletonMgr._instance;
 		}
 	}
+
+    public T AddSingletonComponent<T>() where T: Component
+    {
+        T t = _singleton.GetComponent<T>();
+        if( t == null )
+        {
+            t = _singleton.AddComponent<T>();
+        }
+        return t;
+    }
 
 	private void InitSingleton()
 	{

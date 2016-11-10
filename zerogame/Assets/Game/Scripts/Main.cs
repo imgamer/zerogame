@@ -20,6 +20,8 @@ class Main: MonoBehaviour
 
     void Start()
     {
+        MonoSingletonMgr.Create();
+        SingletonTest.Create();
         SFDebug.Log("Game start...");
     }
 
