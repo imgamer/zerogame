@@ -21,7 +21,9 @@ class Main: MonoBehaviour
     void Start()
     {
         MonoSingletonMgr.Create();
-        SingletonTest.Create();
+
+        // To create C# Singleton here.
+
         SFDebug.Log("Game start...");
     }
 
@@ -35,7 +37,7 @@ class Main: MonoBehaviour
         else if( _instance != this )
         {
             GameObject.Destroy(this);
-            SFDebug.Warning("There is already a instance of Main created( {0} ), now destoy the new one.", _instance.name );
+            SFDebug.LogWarning("There is already a instance of Main created( {0} ), now destoy the new one.", _instance.name );
         }
     }
 }
