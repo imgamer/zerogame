@@ -12,7 +12,6 @@ public class ResourcesPacker : Packer
         }
     }
 
-	public override void ResetAssets() {}
 	public override void PackAssets() {}
 	public override void DistributeAssets() {}
 }
