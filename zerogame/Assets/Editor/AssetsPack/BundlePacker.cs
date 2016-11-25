@@ -13,6 +13,10 @@ public class BundlePacker : Packer
         }
     }
 
-	public override void PackAssets() {}
+	public override void PackAssets() 
+	{
+		AssetDatabase.RenameAsset(string.Format("{0}/{1}", UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME), PACKAGES_DIR_NAME);
+		AssetDatabase.Refresh();
+	}
 	public override void DistributeAssets() {}
 }
