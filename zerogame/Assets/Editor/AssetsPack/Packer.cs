@@ -49,5 +49,33 @@ public abstract class Packer
         AssetDatabase.Refresh();
     }
 
-	//protected void updateDetailDict( s)
+	protected void updateDetailDict( string p_path )
+	{
+		List<string> filepaths = GetAssetsPathsByDir (p_path);
+		foreach (string filepath in filepaths) 
+		{
+			UnityEngine unityobj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>( filepath );
+			if(unityobj)
+			{
+				string[] strs = filepath.Split( new char[]{"."} );
+				string assetName = strs[0].Replace( filepath+"/", "" );
+			}
+		}
+	}
+
+	protected List<string> GetAssetsPathsByDir( string p_dirpath )
+	{
+		List<string> paths = new List<string> ();
+		if (string.IsNullOrEmpty (p_dirpath))
+			return paths;
+
+		string[] assetsPaths = Directory.GetFiles ( p_dirpath );
+		foreach (string filepath in assetsPaths) 
+		{
+			string str = filepath.Replace( '\\', '/' );
+			paths.Add( str );
+		}
+
+		return paths;
+	}
 }
