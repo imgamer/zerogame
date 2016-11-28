@@ -1,4 +1,5 @@
 ﻿using UnityEditor;
+using UnityEngine;
 
 using System.IO;
 using System.Collections.Generic;
@@ -54,10 +55,10 @@ public abstract class Packer
 		List<string> filepaths = GetAssetsPathsByDir (p_path);
 		foreach (string filepath in filepaths) 
 		{
-			UnityEngine unityobj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>( filepath );
+			UnityEngine.Object unityobj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>( filepath );
 			if(unityobj)
 			{
-				string[] strs = filepath.Split( new char[]{"."} );
+				string[] strs = filepath.Split( new char[]{'.'} );
 				string assetName = strs[0].Replace( filepath+"/", "" );
 			}
 		}
