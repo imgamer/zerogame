@@ -17,7 +17,7 @@ public struct AssetsDetail
 	uint crc;			// 文件crc，写到配置后可以用来判断资源是否过时了
 	int size;			// 
 
-	AssetsDetail( string p_name, AssetsType p_type, string p_path, uint p_crc, int p_size )
+	public AssetsDetail( string p_name, AssetsType p_type, string p_path, uint p_crc, int p_size )
 	{
 		name = p_name;
 		type = p_type;
