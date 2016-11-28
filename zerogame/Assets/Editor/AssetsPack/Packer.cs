@@ -2,6 +2,7 @@
 using UnityEngine;
 
 using System.IO;
+using System.Text;
 using System.Collections.Generic;
 
 public abstract class Packer 
@@ -9,14 +10,13 @@ public abstract class Packer
     public static readonly string STREAMING_ASSETS_PATH = "Assets/StreamingAssets";
     public static readonly string BUNDLE_ASSETS_PATH = "Assets/Game/GameAssets/BundleAssets";
     public static readonly string SERVER_ASSETS_PATH = "Assets/Game/GameAssets/ServerAssets";
+    // 这里的资源在Bundle方式打包时会生成bundle包，打包前会把其中的Resources目录改名为Packages目录
+    public static readonly string UNFIXED_ASSETS_PATH = "Assets/Game/GameAssets/UnfixedAssets";
+	public static readonly string FIXED_ASSETS_PATH = "Assets/Game/GameAssets/FixedAssets";
+    public static readonly string ASSETS_CONFIG_FILE_PATH = string.Format("{0}/{1}", UNFIXED_ASSETS_PATH, "assets_table.txt");
 
 	// scene需要单独打包
 	public static readonly string SCENE_FILE_PATH = "Assets/Game/GameAssets/UnfixedAssets/Scenes";
-
-    // 这里的资源在Bundle方式打包时会生成bundle包，打包前会把其中的Resources目录改名为Packages目录
-    public static readonly string UNFIXED_ASSETS_PATH = "Assets/Game/GameAssets/UnfixedAssets";
-
-	public static readonly string FIXED_ASSETS_PATH = "Assets/Game/GameAssets/FixedAssets";
 
     public static readonly string RESOURCES_DIR_NAME = "Resources";
     public static readonly string PACKAGES_DIR_NAME = "Packages";
@@ -25,6 +25,7 @@ public abstract class Packer
 	public static readonly string BUNDLE_MANIFEST_FILE_NAME = "BundleAssets";
 
 	protected Dictionary<string, AssetsDetail> _assetsDetailDict = new Dictionary<string, AssetsDetail>();
+    protected Dictionary<AssetsType, List<AssetBundleBuild>> _buildAssetsBundleDict = new Dictionary<AssetsType, List<AssetBundleBuild>>();
 
     protected AssetsType _assetsType = AssetsType.Resources;
     protected AssetsType assetsType
@@ -116,4 +117,22 @@ public abstract class Packer
 
 		return paths;
 	}
+
+    protected void CreateConfigTableFile()
+    {
+        FileStream fs = File.Open(ASSETS_CONFIG_FILE_PATH, FileMode.OpenOrCreate, FileAccess.Write);
+        fs.Seek(0, SeekOrigin.Begin );
+        fs.SetLength(0);
+        fs.Close();
+
+        StreamWriter strw = new StreamWriter(ASSETS_CONFIG_FILE_PATH, true, Encoding.UTF8);
+        foreach( AssetsDetail item in _assetsDetailDict.Values )
+        {
+            strw.WriteLine(item.name + "\t" + item.type + "\t" + item.path + "\t" + item.crc + "\t" + item.size + "\n");
+        }
+        strw.Flush();
+        strw.Close();
+        AssetDatabase.Refresh();
+
+    }
 }

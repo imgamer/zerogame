@@ -34,6 +34,8 @@ public class ResourcesPacker : Packer
 		_assetsDetailDict.Add (BUNDLE_MANIFEST_FILE_NAME, new AssetsDetail ( BUNDLE_MANIFEST_FILE_NAME, AssetsType.Resources, string.Empty, 0, 0 ));
 
         UpdateDetailDict(assetsList.ToArray());
+        CreateConfigTableFile();
+
 	}
 	public override void DistributeAssets() {}
 }

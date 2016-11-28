@@ -11,11 +11,11 @@ public enum AssetsType
 
 public struct AssetsDetail
 {
-	string name;
-	AssetsType type;
-	string path;
-	uint crc;			// 文件crc，写到配置后可以用来判断资源是否过时了
-	int size;			// 
+	public string name;
+    public AssetsType type;
+    public string path;
+    public uint crc;			// 文件crc，写到配置后可以用来判断资源是否过时了
+    public int size;			// 
 
 	public AssetsDetail( string p_name, AssetsType p_type, string p_path, uint p_crc, int p_size )
 	{
