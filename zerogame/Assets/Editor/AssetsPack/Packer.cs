@@ -26,6 +26,19 @@ public abstract class Packer
 
 	protected Dictionary<string, AssetsDetail> _assetsDetailDict = new Dictionary<string, AssetsDetail>();
 
+    protected AssetsType _assetsType = AssetsType.Resources;
+    protected AssetsType assetsType
+    {
+        get
+        {
+            return _assetsType;
+        }
+        set
+        {
+            _assetsType = value;
+        }
+    }
+
 	public abstract void SetSencesInBuild();
 	public abstract void PackAssets();
 	public abstract void DistributeAssets();
@@ -50,18 +63,34 @@ public abstract class Packer
         AssetDatabase.Refresh();
     }
 
-	protected void updateDetailDict( string p_path )
+	protected void updateDetailDict( string[] p_paths )
 	{
-		List<string> filepaths = GetAssetsPathsByDir (p_path);
-		foreach (string filepath in filepaths) 
-		{
-			UnityEngine.Object unityobj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>( filepath );
-			if(unityobj)
-			{
-				string[] strs = filepath.Split( new char[]{'.'} );
-				string assetName = strs[0].Replace( filepath+"/", "" );
-			}
-		}
+        foreach (string dirPath in p_paths)
+        {
+            List<string> filepaths = GetAssetsPathsByDir(dirPath);
+            foreach (string filepath in filepaths)
+            {
+                UnityEngine.Object unityobj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(filepath);
+                if (unityobj)
+                {
+                    string[] strs = filepath.Split(new char[] { '.' });
+                    string assetName = strs[0].Replace(filepath + "/", "");
+                    if (string.IsNullOrEmpty(unityobj.name))
+                    {
+                        SFDebug.LogError("资源包名字为空。");
+                        continue;
+                    }
+                    if (!unityobj.name.Equals(unityobj.name.ToLower()))
+                    {
+                        SFDebug.LogError("资源包({0})命名不规范，必须全部小写字母。资源路径：{1}.", unityobj.name, filepath);
+                        continue;
+                    }
+
+                    AssetsDetail assetsDetail = new AssetsDetail(unityobj.name, assetsType, filepath, 0, 0);
+                    _assetsDetailDict.Add(unityobj.name, assetsDetail);
+                }
+            }
+        }
 	}
 
 	protected List<string> GetAssetsPathsByDir( string p_dirpath )

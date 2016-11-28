@@ -3,6 +3,10 @@ using System.Collections;
 
 public class BundlePacker : Packer 
 {
+    public BundlePacker()
+    {
+        assetsType = AssetsType.Local;
+    }
 
 	public override void SetSencesInBuild()
     {
