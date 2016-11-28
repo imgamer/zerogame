@@ -99,7 +99,7 @@ public abstract class Packer
 		if (string.IsNullOrEmpty (p_dirpath))
 			return paths;
 
-		string[] assetsPaths = Directory.GetFiles ( p_dirpath );
+        string[] assetsPaths = Directory.GetFiles(p_dirpath, "*.*", SearchOption.AllDirectories);
 		foreach (string filepath in assetsPaths) 
 		{
 			string str = filepath.Replace( '\\', '/' );

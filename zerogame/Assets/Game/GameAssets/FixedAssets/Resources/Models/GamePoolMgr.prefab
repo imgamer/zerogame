@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 451186}
   - 114: {fileID: 11482496}
   m_Layer: 0
-  m_Name: GamePoolMgr
+  m_Name: gamepoolmgr
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
