@@ -8,6 +8,11 @@ public class BundlePacker : Packer
         assetsType = AssetsType.Local;
     }
 
+    protected override void Initialize()
+    {
+        SFDebug.Log("BundlePacker::Initialize.");
+    }
+
 	public override void SetSencesInBuild()
     {
         EditorBuildSettings.scenes[0].enabled = true;

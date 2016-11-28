@@ -39,6 +39,14 @@ public abstract class Packer
         }
     }
 
+    protected List<string> assetsList = new List<string>();
+
+    protected Packer()
+    {
+        Initialize();
+    }
+
+    protected abstract void Initialize();
 	public abstract void SetSencesInBuild();
 	public abstract void PackAssets();
 	public abstract void DistributeAssets();
@@ -63,7 +71,7 @@ public abstract class Packer
         AssetDatabase.Refresh();
     }
 
-	protected void updateDetailDict( string[] p_paths )
+	protected void UpdateDetailDict( string[] p_paths )
 	{
         foreach (string dirPath in p_paths)
         {
