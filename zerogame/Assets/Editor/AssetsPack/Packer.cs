@@ -22,25 +22,16 @@ public abstract class Packer
     public static readonly string PACKAGES_DIR_NAME = "Packages";
 
 	public static readonly string ASSETS_CONFIG_FILE_NAME = "assets_table";
-	public static readonly string BUNDLE_MANIFEST_FILE_NAME = "BundleAssets";
+	public static readonly string BUNDLE_MANIFEST_FILE_NAME = "BundleAssets";   // 此文件由打包功能生成，命名和打包的目标路径目录相同
 
-	protected Dictionary<string, AssetsDetail> _assetsDetailDict = new Dictionary<string, AssetsDetail>();
-    protected Dictionary<AssetsType, List<AssetBundleBuild>> _buildAssetsBundleDict = new Dictionary<AssetsType, List<AssetBundleBuild>>();
+	protected Dictionary<string, AssetsDetail> m_assetsDetailDict = new Dictionary<string, AssetsDetail>();
+    protected Dictionary<AssetsType, List<AssetBundleBuild>> m_buildAssetsBundleDict = new Dictionary<AssetsType, List<AssetBundleBuild>>();
 
-    protected AssetsType _assetsType = AssetsType.Resources;
-    protected AssetsType assetsType
-    {
-        get
-        {
-            return _assetsType;
-        }
-        set
-        {
-            _assetsType = value;
-        }
-    }
+    protected AssetsType m_assetsType = AssetsType.Resources;
 
-    protected List<string> assetsList = new List<string>();
+    protected List<string> m_assetsList = new List<string>();
+    // 区分了不同打包资源的类型目前最大的作用是方便调试时查看数据
+    protected Dictionary<AssetsType, List<AssetBundleBuild>> m_bundleBuildDict = new Dictionary<AssetsType, List<AssetBundleBuild>>();
 
     protected Packer()
     {
@@ -95,8 +86,8 @@ public abstract class Packer
                         continue;
                     }
 
-                    AssetsDetail assetsDetail = new AssetsDetail(unityobj.name, assetsType, filepath, 0, 0);
-                    _assetsDetailDict.Add(unityobj.name, assetsDetail);
+                    AssetsDetail assetsDetail = new AssetsDetail(unityobj.name, m_assetsType, filepath, 0, 0);
+                    m_assetsDetailDict.Add(unityobj.name, assetsDetail);
                 }
             }
         }
@@ -126,7 +117,7 @@ public abstract class Packer
         fs.Close();
 
         StreamWriter strw = new StreamWriter(ASSETS_CONFIG_FILE_PATH, true, Encoding.UTF8);
-        foreach( AssetsDetail item in _assetsDetailDict.Values )
+        foreach( AssetsDetail item in m_assetsDetailDict.Values )
         {
             strw.WriteLine(item.name + "\t" + item.type + "\t" + item.path + "\t" + item.crc + "\t" + item.size + "\n");
         }
@@ -134,5 +125,53 @@ public abstract class Packer
         strw.Close();
         AssetDatabase.Refresh();
 
+    }
+
+    protected void UpdateConfigTableBundleBuild( AssetsType p_assetsType )
+    {
+        List<AssetBundleBuild> bundleBuildList;
+        m_buildAssetsBundleDict.TryGetValue(p_assetsType, out bundleBuildList);
+        if(bundleBuildList == null)
+        {
+            bundleBuildList = new List<AssetBundleBuild>();
+            m_buildAssetsBundleDict.Add(p_assetsType, bundleBuildList);
+        }
+
+        AssetBundleBuild bundleBuild = new AssetBundleBuild();
+        bundleBuild.assetBundleName = ASSETS_CONFIG_FILE_NAME;
+        bundleBuild.assetNames = new string[] { ASSETS_CONFIG_FILE_PATH };
+        bundleBuildList.Add(bundleBuild);
+    }
+
+    protected void BuildAssetsBundle()
+    {
+        List<AssetBundleBuild> assetBundleBuildList = new List<AssetBundleBuild>();
+        foreach( List<AssetBundleBuild> bundleBuilds in m_buildAssetsBundleDict.Values )
+        {
+            assetBundleBuildList.AddRange(bundleBuilds);
+        }
+
+        string bundleLocalPath = string.Format("{0}/{1}", Application.dataPath, BUNDLE_ASSETS_PATH);
+        BuildTarget buildTarget = GetBuildTarget();
+        BuildPipeline.BuildAssetBundles(bundleLocalPath, assetBundleBuildList.ToArray(), BuildAssetBundleOptions.None, buildTarget );
+
+        AssetDatabase.Refresh();
+    }
+
+    private static BuildTarget GetBuildTarget()
+    {
+        BuildTarget target = BuildTarget.StandaloneWindows;
+#if UNITY_ANDROID
+            target = BuildTarget.Android;
+#elif UNITY_IPHONE
+        target = BuildTarget.iPhone;
+#elif UNITY_WEBPLAYER
+        target = BuildTarget.WebPlayer;
+#elif UNITY_STANDALONE_WIN
+        target = BuildTarget.StandaloneWindows;
+#elif UNITY_FLASH
+        target = BuildTarget.FlashPlayer;
+#endif
+        return target;
     }
 }

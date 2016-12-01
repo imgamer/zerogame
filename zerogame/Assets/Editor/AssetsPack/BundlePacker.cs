@@ -5,7 +5,7 @@ public class BundlePacker : Packer
 {
     public BundlePacker()
     {
-        assetsType = AssetsType.Local;
+        m_assetsType = AssetsType.Local;
     }
 
     protected override void Initialize()
