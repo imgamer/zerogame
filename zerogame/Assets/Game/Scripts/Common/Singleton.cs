@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public abstract class Singleton<T> where T : Singleton<T>, new()
 {
-    private static T _instance = null;
+    private static T m_instance = null;
 
-    protected Singleton()
+    public Singleton()
     {
+        Debug.Assert(m_instance == null);
+        m_instance = (T)this;
         SFDebug.Log("Singleton({0}) init....", this.ToString());
     }
 
     public static void Create()
     {
-        if( _instance == null )
+        if( m_instance == null )
         {
-            _instance = new T();
+            m_instance = new T();
         }
     }
 
@@ -22,11 +25,11 @@ public abstract class Singleton<T> where T : Singleton<T>, new()
     {
         get
         {
-            if( _instance == null )
+            if( m_instance == null )
             {
                 Create();
             }
-            return _instance;
+            return m_instance;
         }
     }
 
