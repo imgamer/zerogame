@@ -6,7 +6,7 @@ public abstract class Singleton<T> where T : Singleton<T>, new()
 {
     private static T m_instance = null;
 
-    public Singleton()
+    protected Singleton()
     {
         Debug.Assert(m_instance == null);
         m_instance = (T)this;
