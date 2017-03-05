@@ -6,27 +6,27 @@ using System.Collections;
 // 3. 初始化和反初始化流程
 public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T> {
 
-    private static T _instance = null;
+    private static T m_instance = null;
     //private bool _inited = false;
 
     public static T Instance
     {
         get
         {
-            if( _instance == null )
+            if( m_instance == null )
             {
                 Create();
             }
-            return _instance;
+            return m_instance;
         }
     }
 
     public static void Create()
     {
-        if( _instance == null )
+        if( m_instance == null )
         {
-            _instance = MonoSingletonMgr.Instance.AddSingletonComponent<T>();   // Awake执行
-            _instance.Init();   // Init先于Start执行
+            m_instance = MonoSingletonMgr.Instance.AddSingletonComponent<T>();   // Awake执行
+            m_instance.Init();   // Init先于Start执行
         }
     }
 
@@ -42,8 +42,8 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T>
 
     public static void Destroy()
     {
-        if (_instance == null) return;
-        _instance.Finit();
+        if (m_instance == null) return;
+        m_instance.Finit();
     }
 
     protected abstract void OnInit();

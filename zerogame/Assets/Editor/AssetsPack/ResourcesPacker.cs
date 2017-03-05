@@ -1,4 +1,5 @@
 ﻿using UnityEditor;
+using UnityEngine;
 using System.Collections;
 using System.IO;
 
@@ -13,7 +14,7 @@ public class ResourcesPacker : Packer
 
     protected override void Initialize()
     {
-        SFDebug.Log("ResourcesPacker::Initialize.");
+        Debug.Log("ResourcesPacker::Initialize.");
         m_assetsList.Add(SCENE_FILE_PATH);
         m_assetsList.Add(string.Format("{0}/{1}", FIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
         m_assetsList.Add(string.Format( "{0}/{1}", UNFIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
@@ -44,7 +45,7 @@ public class ResourcesPacker : Packer
 
 	public override void DistributeAssets() 
     {
-        SFDebug.Log( "ResourcesType DistributeAssets." );
+        Debug.Log( "ResourcesType DistributeAssets." );
 		DirectoryInfo dir_info = new DirectoryInfo (BUNDLE_ASSETS_PATH);
 		foreach(FileInfo file in dir_info.GetFiles())
 		{

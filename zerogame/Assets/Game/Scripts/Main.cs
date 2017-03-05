@@ -2,13 +2,13 @@ using UnityEngine;
 
 class Main: MonoBehaviour
 {
-    private static Main _instance = null;
+    private static Main m_instance = null;
 
     public Main Instance
     {
         get
         {
-            return Main._instance;
+            return Main.m_instance;
         }
     }
 
@@ -29,15 +29,15 @@ class Main: MonoBehaviour
 
     private void CheckSingleton()
     {
-        if( _instance == null)
+        if( m_instance == null)
         {
-            _instance = this;
+            m_instance = this;
             SFDebug.Log("Main::CheckSingleton...good..");
         }
-        else if( _instance != this )
+        else if( m_instance != this )
         {
             GameObject.Destroy(this);
-            SFDebug.LogWarning("There is already a instance of Main created( {0} ), now destoy the new one.", _instance.name );
+            SFDebug.LogWarning("There is already a instance of Main created( {0} ), now destoy the new one.", m_instance.name );
         }
     }
 }

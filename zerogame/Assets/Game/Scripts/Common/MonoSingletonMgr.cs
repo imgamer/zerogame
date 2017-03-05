@@ -8,8 +8,8 @@ public class MonoSingletonMgr
 {
 	public static readonly string SINGLETON_GAMEOBJECT_NAME = "Singleton";
 
-	private static MonoSingletonMgr _instance;
-	private static GameObject _singleton;
+	private static MonoSingletonMgr m_instance;
+	private static GameObject m_singleton;
 
 	private MonoSingletonMgr()
 	{
@@ -18,19 +18,19 @@ public class MonoSingletonMgr
 
 	public static void Create()
 	{
-		if (_instance == null) 
+		if (m_instance == null) 
 		{
-			_instance = new MonoSingletonMgr();
+			m_instance = new MonoSingletonMgr();
 
 			GameObject singleton = GameObject.Find(SINGLETON_GAMEOBJECT_NAME);
 			if(singleton == null)
 			{
 				singleton = new GameObject(SINGLETON_GAMEOBJECT_NAME);
-                MonoSingletonMgr._singleton = singleton;
+                MonoSingletonMgr.m_singleton = singleton;
 				GameObject.DontDestroyOnLoad(singleton);
 			}
 
-            _instance.InitSingleton();
+            m_instance.InitSingleton();
 		}
 	}
 
@@ -38,21 +38,21 @@ public class MonoSingletonMgr
 	{
 		get
 		{
-			if(_instance == null)
+			if(m_instance == null)
 			{
 				Create();
 			}
 
-			return MonoSingletonMgr._instance;
+			return MonoSingletonMgr.m_instance;
 		}
 	}
 
     public T AddSingletonComponent<T>() where T: Component
     {
-        T t = _singleton.GetComponent<T>();
+        T t = m_singleton.GetComponent<T>();
         if( t == null )
         {
-            t = _singleton.AddComponent<T>();
+            t = m_singleton.AddComponent<T>();
         }
         return t;
     }
