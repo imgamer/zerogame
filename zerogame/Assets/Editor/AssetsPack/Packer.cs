@@ -8,8 +8,9 @@ using System.Collections.Generic;
 public abstract class Packer 
 {
     public static readonly string STREAMING_ASSETS_PATH = "Assets/StreamingAssets";
-    public static readonly string BUNDLE_ASSETS_PATH = "Assets/Game/GameAssets/BundleAssets";
-    public static readonly string SERVER_ASSETS_PATH = "Assets/Game/GameAssets/ServerAssets";
+    public static readonly string BUNDLE_ASSETS_PATH = "Assets/BundleAssets";
+    public static readonly string SERVER_ASSETS_PATH = "Assets/ServerAssets";
+
     // 这里的资源在Bundle方式打包时会生成bundle包，打包前会把其中的Resources目录改名为Packages目录
     public static readonly string UNFIXED_ASSETS_PATH = "Assets/Game/GameAssets/UnfixedAssets";
 	public static readonly string FIXED_ASSETS_PATH = "Assets/Game/GameAssets/FixedAssets";
@@ -86,8 +87,9 @@ public abstract class Packer
                         continue;
                     }
 
-                    AssetsDetail assetsDetail = new AssetsDetail(unityobj.name, m_assetsType, filepath, 0, 0);
-                    m_assetsDetailDict.Add(unityobj.name, assetsDetail);
+					string relativePath = filepath.Replace(dirPath+"/", "");
+					AssetsDetail assetsDetail = new AssetsDetail(unityobj.name, m_assetsType, relativePath, 0, 0);
+					m_assetsDetailDict.Add(unityobj.name, assetsDetail);
                 }
             }
         }
@@ -127,14 +129,14 @@ public abstract class Packer
 
     }
 
-    protected void UpdateConfigTableBundleBuild( AssetsType p_assetsType )
+    protected void UpdateConfigTableBundleBuild()
     {
         List<AssetBundleBuild> bundleBuildList;
-        m_buildAssetsBundleDict.TryGetValue(p_assetsType, out bundleBuildList);
+		m_buildAssetsBundleDict.TryGetValue(m_assetsType, out bundleBuildList);
         if(bundleBuildList == null)
         {
             bundleBuildList = new List<AssetBundleBuild>();
-            m_buildAssetsBundleDict.Add(p_assetsType, bundleBuildList);
+			m_buildAssetsBundleDict.Add(m_assetsType, bundleBuildList);
         }
 
         AssetBundleBuild bundleBuild = new AssetBundleBuild();
@@ -151,7 +153,7 @@ public abstract class Packer
             assetBundleBuildList.AddRange(bundleBuilds);
         }
 
-        string bundleLocalPath = string.Format("{0}/{1}", Application.dataPath, BUNDLE_ASSETS_PATH);
+		string bundleLocalPath = string.Format("{0}/BundleAssets", Application.dataPath);
         BuildTarget buildTarget = GetBuildTarget();
         BuildPipeline.BuildAssetBundles(bundleLocalPath, assetBundleBuildList.ToArray(), BuildAssetBundleOptions.None, buildTarget );
 

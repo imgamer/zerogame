@@ -1,5 +1,7 @@
 ﻿using UnityEditor;
 using System.Collections;
+using System.IO;
+
 
 public class ResourcesPacker : Packer 
 {
@@ -35,13 +37,19 @@ public class ResourcesPacker : Packer
 
         UpdateDetailDict(m_assetsList.ToArray());
         CreateConfigTableFile();
-        UpdateConfigTableBundleBuild( this.m_assetsType );
+        UpdateConfigTableBundleBuild();
 
         BuildAssetsBundle();
 	}
+
 	public override void DistributeAssets() 
     {
         SFDebug.Log( "ResourcesType DistributeAssets." );
+		DirectoryInfo dir_info = new DirectoryInfo (BUNDLE_ASSETS_PATH);
+		foreach(FileInfo file in dir_info.GetFiles())
+		{
+			file.MoveTo(Path.Combine(STREAMING_ASSETS_PATH, file.Name ) );
+		}
     }
 }
 

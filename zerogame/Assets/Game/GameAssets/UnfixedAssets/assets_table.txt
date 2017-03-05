@@ -1,0 +1,8 @@
+﻿assets_table	Resources		0	0
+
+BundleAssets	Resources		0	0
+
+gamepoolmgr	Resources	Models/GamePoolMgr.prefab	0	0
+
+knight	Resources	Models/Knight.prefab	0	0
+
