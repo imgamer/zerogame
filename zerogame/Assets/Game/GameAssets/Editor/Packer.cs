@@ -12,9 +12,10 @@ public abstract class Packer
     public static readonly string SERVER_ASSETS_PATH = "Assets/Game/GameAssets/ServerAssets";
 
     // 这里的资源在Bundle方式打包时会生成bundle包，打包前会把其中的Resources目录改名为Packages目录
-    public static readonly string UNFIXED_ASSETS_PATH = "Assets/Game/GameAssets/UnfixedAssets";
-	public static readonly string FIXED_ASSETS_PATH = "Assets/Game/GameAssets/FixedAssets";
-    public static readonly string ASSETS_CONFIG_FILE_PATH = string.Format("{0}/{1}", UNFIXED_ASSETS_PATH, "assets_table.txt");
+	public static readonly string ASSETS_PATH = "Assets/Game/GameAssets";
+	public static readonly string UNFIXED_ASSETS_PATH = ASSETS_PATH + "/UnfixedAssets";
+	public static readonly string FIXED_ASSETS_PATH = ASSETS_PATH + "/FixedAssets";
+	public static readonly string ASSETS_CONFIG_FILE_PATH = string.Format("{0}/{1}", ASSETS_PATH, "assets_table.txt");
 
 	// scene需要单独打包
 	public static readonly string SCENE_FILE_PATH = "Assets/Game/GameAssets/UnfixedAssets/Scenes";
@@ -153,7 +154,7 @@ public abstract class Packer
             assetBundleBuildList.AddRange(bundleBuilds);
         }
 
-		string bundleLocalPath = string.Format("{0}/BundleAssets", Application.dataPath);
+		string bundleLocalPath = Application.dataPath.Replace("/Assets","/") + BUNDLE_ASSETS_PATH;
         BuildTarget buildTarget = GetBuildTarget();
         BuildPipeline.BuildAssetBundles(bundleLocalPath, assetBundleBuildList.ToArray(), BuildAssetBundleOptions.None, buildTarget );
 

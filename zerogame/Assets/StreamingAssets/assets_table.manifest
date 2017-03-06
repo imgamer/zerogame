@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 966943197
+CRC: 2959313705
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cbde9a04c519c8f10a3a67e80ffc2afe
+    Hash: 509e40d9506ac018090a8e73e6d18d75
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
@@ -12,5 +12,5 @@ ClassTypes:
 - Class: 49
   Script: {instanceID: 0}
 Assets:
-- Assets/Game/GameAssets/UnfixedAssets/assets_table.txt
+- Assets/Game/GameAssets/assets_table.txt
 Dependencies: []
