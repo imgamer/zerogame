@@ -8,8 +8,8 @@ using System.Collections.Generic;
 public abstract class Packer 
 {
     public static readonly string STREAMING_ASSETS_PATH = "Assets/StreamingAssets";
-    public static readonly string BUNDLE_ASSETS_PATH = "Assets/BundleAssets";
-    public static readonly string SERVER_ASSETS_PATH = "Assets/ServerAssets";
+    public static readonly string BUNDLE_ASSETS_PATH = "Assets/Game/GameAssets/BundleAssets";
+    public static readonly string SERVER_ASSETS_PATH = "Assets/Game/GameAssets/ServerAssets";
 
     // 这里的资源在Bundle方式打包时会生成bundle包，打包前会把其中的Resources目录改名为Packages目录
     public static readonly string UNFIXED_ASSETS_PATH = "Assets/Game/GameAssets/UnfixedAssets";
