@@ -22,7 +22,7 @@ public class TestMain : MonoBehaviour {
     void Start()
     {
         MonoSingletonMgr.Create();
-        SingletonTest.Create();
+        TestMgr.Create();
         SFDebug.Log("Test game start...");
     }
 
