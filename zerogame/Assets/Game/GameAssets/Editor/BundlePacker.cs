@@ -1,5 +1,7 @@
 ﻿using UnityEditor;
-using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+
 
 public class BundlePacker : Packer 
 {
@@ -8,10 +10,14 @@ public class BundlePacker : Packer
         m_assetsType = AssetsType.Local;
     }
 
-    protected override void Initialize()
-    {
-        Logger.Log("BundlePacker::Initialize.");
-    }
+	protected override List<string> GetAssetsPaths()
+	{
+		List<string> assetsList = new List<string> ();
+		assetsList.Add(SCENE_FILE_PATH);
+		assetsList.Add(string.Format("{0}/{1}", FIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
+		assetsList.Add(string.Format( "{0}/{1}", UNFIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
+		return assetsList;
+	}
 
 	public override void SetSencesInBuild()
     {
@@ -27,5 +33,12 @@ public class BundlePacker : Packer
 		AssetDatabase.RenameAsset(string.Format("{0}/{1}", UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME), PACKAGES_DIR_NAME);
 		AssetDatabase.Refresh();
 	}
-	public override void DistributeAssets() {}
+	public override void DistributeAssets()
+	{
+		DirectoryInfo dir_info = new DirectoryInfo (BUNDLE_ASSETS_PATH);
+		foreach(FileInfo file in dir_info.GetFiles())
+		{
+			file.MoveTo(Path.Combine(STREAMING_ASSETS_PATH, file.Name ) );
+		}
+	}
 }

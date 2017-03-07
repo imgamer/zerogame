@@ -24,23 +24,17 @@ public abstract class Packer
     public static readonly string PACKAGES_DIR_NAME = "Packages";
 
 	public static readonly string ASSETS_CONFIG_FILE_NAME = "assets_table";
-	public static readonly string BUNDLE_MANIFEST_FILE_NAME = "BundleAssets";   // 此文件由打包功能生成，命名和打包的目标路径目录相同
+	public static readonly string BUNDLE_FILE_NAME = "BundleAssets";   // 此文件由打包功能生成，命名和打包的目标路径目录相同
 
 	protected Dictionary<string, AssetsDetail> m_assetsDetailDict = new Dictionary<string, AssetsDetail>();
     protected Dictionary<AssetsType, List<AssetBundleBuild>> m_buildAssetsBundleDict = new Dictionary<AssetsType, List<AssetBundleBuild>>();
 
     protected AssetsType m_assetsType = AssetsType.Resources;
 
-    protected List<string> m_assetsList = new List<string>();
     // 区分了不同打包资源的类型目前最大的作用是方便调试时查看数据
     protected Dictionary<AssetsType, List<AssetBundleBuild>> m_bundleBuildDict = new Dictionary<AssetsType, List<AssetBundleBuild>>();
-
-    protected Packer()
-    {
-        Initialize();
-    }
-
-    protected abstract void Initialize();
+	
+	protected abstract List<string> GetAssetsPaths();
 	public abstract void SetSencesInBuild();
 	public abstract void PackAssets();
 	public abstract void DistributeAssets();
@@ -65,9 +59,9 @@ public abstract class Packer
         AssetDatabase.Refresh();
     }
 
-	protected void UpdateDetailDict( string[] p_paths )
+	protected void UpdateDetailDict()
 	{
-        foreach (string dirPath in p_paths)
+        foreach (string dirPath in GetAssetsPaths().ToArray())
         {
             List<string> filepaths = GetAssetsPathsByDir(dirPath);
             foreach (string filepath in filepaths)
@@ -76,7 +70,7 @@ public abstract class Packer
                 if (unityobj)
                 {
                     string[] strs = filepath.Split(new char[] { '.' });
-                    string assetName = strs[0].Replace(filepath + "/", "");
+                    //string assetName = strs[0].Replace(filepath + "/", "");
                     if (string.IsNullOrEmpty(unityobj.name))
                     {
                         Logger.LogError("资源包名字为空。");
