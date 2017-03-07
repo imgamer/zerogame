@@ -79,12 +79,12 @@ public abstract class Packer
                     string assetName = strs[0].Replace(filepath + "/", "");
                     if (string.IsNullOrEmpty(unityobj.name))
                     {
-                        SFDebug.LogError("资源包名字为空。");
+                        Logger.LogError("资源包名字为空。");
                         continue;
                     }
                     if (!unityobj.name.Equals(unityobj.name.ToLower()))
                     {
-                        SFDebug.LogError("资源包({0})命名不规范，必须全部小写字母。资源路径：{1}.", unityobj.name, filepath);
+                        Logger.LogError("资源包({0})命名不规范，必须全部小写字母。资源路径：{1}.", unityobj.name, filepath);
                         continue;
                     }
 

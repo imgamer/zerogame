@@ -13,7 +13,7 @@ public class MonoSingletonMgr
 
 	private MonoSingletonMgr()
 	{
-		SFDebug.Log("MonoSingletonMgr constructed...");
+		Logger.Log("MonoSingletonMgr constructed...");
 	}
 
 	public static void Create()

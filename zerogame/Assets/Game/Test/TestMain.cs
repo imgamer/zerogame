@@ -16,14 +16,14 @@ public class TestMain : MonoBehaviour {
     void Awake()
     {
         CheckSingleton();
-        SFDebug.Log("Test game awake...");
+        Logger.Log("Test game awake...");
     }
 
     void Start()
     {
         MonoSingletonMgr.Create();
         TestMgr.Create();
-        SFDebug.Log("Test game start...");
+        Logger.Log("Test game start...");
     }
 
     private void CheckSingleton()
@@ -31,12 +31,12 @@ public class TestMain : MonoBehaviour {
         if (_instance == null)
         {
             _instance = this;
-            SFDebug.Log("TestMain::CheckSingleton...good..");
+            Logger.Log("TestMain::CheckSingleton...good..");
         }
         else if (_instance != this)
         {
             GameObject.Destroy(this);
-            SFDebug.LogWarning("There is already a instance of TestMain created( {0} ), now destoy the new one.", _instance.name);
+            Logger.LogWarning("There is already a instance of TestMain created( {0} ), now destoy the new one.", _instance.name);
         }
     }
 }

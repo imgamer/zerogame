@@ -10,7 +10,7 @@ public class BundlePacker : Packer
 
     protected override void Initialize()
     {
-        SFDebug.Log("BundlePacker::Initialize.");
+        Logger.Log("BundlePacker::Initialize.");
     }
 
 	public override void SetSencesInBuild()

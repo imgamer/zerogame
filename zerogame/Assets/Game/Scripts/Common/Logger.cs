@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-public static class SFDebug
+public static class Logger
 {
     public static void Log( string p_formatstring, params object[] p_args )
     {

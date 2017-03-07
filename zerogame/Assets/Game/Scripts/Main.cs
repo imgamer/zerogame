@@ -15,7 +15,7 @@ class Main: MonoBehaviour
     void Awake()
     {
         CheckSingleton();
-        SFDebug.Log("Game awake...");
+        Logger.Log("Game awake...");
     }
 
     void Start()
@@ -24,7 +24,7 @@ class Main: MonoBehaviour
 
         // To create C# Singleton here.
 
-        SFDebug.Log("Game start...");
+        Logger.Log("Game start...");
     }
 
     private void CheckSingleton()
@@ -32,12 +32,12 @@ class Main: MonoBehaviour
         if( m_instance == null)
         {
             m_instance = this;
-            SFDebug.Log("Main::CheckSingleton...good..");
+            Logger.Log("Main::CheckSingleton...good..");
         }
         else if( m_instance != this )
         {
             GameObject.Destroy(this);
-            SFDebug.LogWarning("There is already a instance of Main created( {0} ), now destoy the new one.", m_instance.name );
+            Logger.LogWarning("There is already a instance of Main created( {0} ), now destoy the new one.", m_instance.name );
         }
     }
 }

@@ -10,7 +10,7 @@ public abstract class Singleton<T> where T : Singleton<T>, new()
     {
         Debug.Assert(m_instance == null);
         m_instance = (T)this;
-        SFDebug.Log("Singleton({0}) init....", this.ToString());
+        Logger.Log("Singleton({0}) init....", this.ToString());
     }
 
     public static void Create()

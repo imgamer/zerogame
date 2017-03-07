@@ -5,6 +5,6 @@ public class SingletonTest : Singleton<SingletonTest>
 {
     public SingletonTest()
     {
-        SFDebug.Log("SingletonTest::SingletonTest.....");
+        Logger.Log("SingletonTest::SingletonTest.....");
     }
 }
