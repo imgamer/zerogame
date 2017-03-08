@@ -34,15 +34,28 @@ public abstract class Packer
     // 区分了不同打包资源的类型目前最大的作用是方便调试时查看数据
     protected Dictionary<AssetsType, List<AssetBundleBuild>> m_bundleBuildDict = new Dictionary<AssetsType, List<AssetBundleBuild>>();
 	
-	protected abstract List<string> GetAssetsPaths();
-	public abstract void SetSencesInBuild();
-	public abstract void PackAssets();
+	public void PreparePack()
+    {
+        SetSencesInBuild();
+        ResetAssets();
+        RenameResourceDir();
+    }
+    
+	public void PackAssets()
+    {
+        CreateConfigTableFile();
+        BuildAssetsBundle();
+    }
 	public abstract void DistributeAssets();
+
+    protected abstract void SetSencesInBuild();
+    protected abstract List<string> GetAssetsPaths();
+    protected abstract void RenameResourceDir();
 
     /// <summary>
     /// 把分发的打包文件收回打包目录
     /// </summary>
-    public virtual void ResetAssets()
+    protected virtual void ResetAssets()
     {
         DirectoryInfo streamingAssetsDir = new DirectoryInfo( STREAMING_ASSETS_PATH );
         foreach( FileInfo file in streamingAssetsDir.GetFiles() )
@@ -61,6 +74,9 @@ public abstract class Packer
 
 	protected void UpdateDetailDict()
 	{
+        m_assetsDetailDict.Add(ASSETS_CONFIG_FILE_NAME, new AssetsDetail(ASSETS_CONFIG_FILE_NAME, m_assetsType, string.Empty, 0, 0));
+        m_assetsDetailDict.Add(BUNDLE_FILE_NAME, new AssetsDetail(BUNDLE_FILE_NAME, m_assetsType, string.Empty, 0, 0));
+
         foreach (string dirPath in GetAssetsPaths().ToArray())
         {
             List<string> filepaths = GetAssetsPathsByDir(dirPath);
@@ -142,9 +158,12 @@ public abstract class Packer
         bundleBuildList.Add(bundleBuild);
     }
 
+    protected abstract void UpdateBundleBuild();
+
     protected void BuildAssetsBundle()
     {
         UpdateConfigTableBundleBuild();
+        UpdateBundleBuild();
 
         List<AssetBundleBuild> assetBundleBuildList = new List<AssetBundleBuild>();
         foreach( List<AssetBundleBuild> bundleBuilds in m_buildAssetsBundleDict.Values )

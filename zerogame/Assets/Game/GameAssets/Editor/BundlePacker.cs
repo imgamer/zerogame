@@ -18,7 +18,16 @@ public class BundlePacker : Packer
 		return assetsList;
 	}
 
-	public override void SetSencesInBuild()
+    protected override void UpdateBundleBuild()
+    {}
+
+    protected override void RenameResourceDir()
+    {
+        AssetDatabase.RenameAsset(Path.Combine(UNFIXED_ASSETS_PATH, RESOURCES_DIR_NAME), PACKAGES_DIR_NAME);
+        AssetDatabase.Refresh();
+    }
+
+	protected override void SetSencesInBuild()
     {
         EditorBuildSettings.scenes[0].enabled = true;
         for( int i = 1; i < EditorBuildSettings.scenes.Length; i++ )
@@ -27,11 +36,6 @@ public class BundlePacker : Packer
         }
     }
 
-	public override void PackAssets() 
-	{
-		AssetDatabase.RenameAsset(string.Format("{0}/{1}", UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME), PACKAGES_DIR_NAME);
-		AssetDatabase.Refresh();
-	}
 	public override void DistributeAssets()
 	{
 		DirectoryInfo dir_info = new DirectoryInfo (BUNDLE_ASSETS_PATH);

@@ -12,11 +12,9 @@ public class PackDirector
 
 	public void Pack()
 	{
-		m_packer.SetSencesInBuild ();
-		m_packer.ResetAssets ();
-		m_packer.PackAssets ();
-		m_packer.DistributeAssets ();
-
+        m_packer.PreparePack();
+		m_packer.PackAssets();
+		m_packer.DistributeAssets();
 	}
 
 }

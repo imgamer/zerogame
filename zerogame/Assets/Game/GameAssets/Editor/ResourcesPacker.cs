@@ -21,7 +21,10 @@ public class ResourcesPacker : Packer
 		return assetsList;
 	}
 
-	public override void SetSencesInBuild() 
+    protected override void UpdateBundleBuild()
+    {}
+
+	protected override void SetSencesInBuild() 
     {
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++ )
         {
@@ -29,18 +32,11 @@ public class ResourcesPacker : Packer
         }
     }
 
-	public override void PackAssets() 
+    protected override void RenameResourceDir()
     {
-        AssetDatabase.RenameAsset(Path.Combine( UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME), RESOURCES_DIR_NAME);
+        AssetDatabase.RenameAsset(Path.Combine(UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME), RESOURCES_DIR_NAME);
         AssetDatabase.Refresh();
-
-		m_assetsDetailDict.Add (ASSETS_CONFIG_FILE_NAME, new AssetsDetail ( ASSETS_CONFIG_FILE_NAME, AssetsType.Resources, string.Empty, 0, 0 ));
-		m_assetsDetailDict.Add (BUNDLE_FILE_NAME, new AssetsDetail ( BUNDLE_FILE_NAME, AssetsType.Resources, string.Empty, 0, 0 ));
-
-        CreateConfigTableFile();
-
-        BuildAssetsBundle();
-	}
+    }
 
 	public override void DistributeAssets() 
     {
