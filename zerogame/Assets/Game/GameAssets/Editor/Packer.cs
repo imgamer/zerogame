@@ -85,7 +85,7 @@ public abstract class Packer
                 UnityEngine.Object unityobj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(filepath);
                 if (unityobj)
                 {
-                    string[] strs = filepath.Split(new char[] { '.' });
+                    //string[] strs = filepath.Split(new char[] { '.' });
                     //string assetName = strs[0].Replace(filepath + "/", "");
                     if (string.IsNullOrEmpty(unityobj.name))
                     {

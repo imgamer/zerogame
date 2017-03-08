@@ -16,8 +16,8 @@ public class ResourcesPacker : Packer
 	{
 		List<string> assetsList = new List<string> ();
 		assetsList.Add(SCENE_FILE_PATH);
-		assetsList.Add(string.Format("{0}/{1}", FIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
-		assetsList.Add(string.Format( "{0}/{1}", UNFIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
+		assetsList.Add(Path.Combine(FIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
+		assetsList.Add(Path.Combine(UNFIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
 		return assetsList;
 	}
 
@@ -42,7 +42,7 @@ public class ResourcesPacker : Packer
     {
         MoveFile2StreamingDir(ASSETS_CONFIG_FILE_NAME); // assets_table
         MoveFile2StreamingDir(BUNDLE_FILE_NAME);        // BundleAssets
-        AssetDatabase.Refresh();
+        
     }
 
     private void MoveFile2StreamingDir(string p_fileName)
@@ -52,6 +52,7 @@ public class ResourcesPacker : Packer
         string manifest_file_name = p_fileName + ".manifest";
         fileInfo = new FileInfo(Path.Combine(BUNDLE_ASSETS_PATH, manifest_file_name));
         fileInfo.MoveTo(Path.Combine(STREAMING_ASSETS_PATH, manifest_file_name));
+		AssetDatabase.Refresh();
     }
 }
 
