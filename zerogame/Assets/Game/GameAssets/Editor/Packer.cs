@@ -73,12 +73,12 @@ public abstract class Packer
                     //string assetName = strs[0].Replace(filepath + "/", "");
                     if (string.IsNullOrEmpty(unityobj.name))
                     {
-                        Logger.LogError("资源包名字为空。");
+                        Debug.LogError("资源包名字为空。");
                         continue;
                     }
                     if (!unityobj.name.Equals(unityobj.name.ToLower()))
                     {
-                        Logger.LogError("资源包({0})命名不规范，必须全部小写字母。资源路径：{1}.", unityobj.name, filepath);
+                        Debug.LogError(string.Format("资源包({0})命名不规范，必须全部小写字母。资源路径：{1}.", unityobj.name, filepath));
                         continue;
                     }
 
@@ -108,6 +108,8 @@ public abstract class Packer
 
     protected void CreateConfigTableFile()
     {
+        UpdateDetailDict();
+
         FileStream fs = File.Open(ASSETS_CONFIG_FILE_PATH, FileMode.OpenOrCreate, FileAccess.Write);
         fs.Seek(0, SeekOrigin.Begin );
         fs.SetLength(0);
@@ -142,6 +144,8 @@ public abstract class Packer
 
     protected void BuildAssetsBundle()
     {
+        UpdateConfigTableBundleBuild();
+
         List<AssetBundleBuild> assetBundleBuildList = new List<AssetBundleBuild>();
         foreach( List<AssetBundleBuild> bundleBuilds in m_buildAssetsBundleDict.Values )
         {

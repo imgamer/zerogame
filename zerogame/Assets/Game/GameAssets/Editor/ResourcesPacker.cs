@@ -31,34 +31,31 @@ public class ResourcesPacker : Packer
 
 	public override void PackAssets() 
     {
-        AssetDatabase.RenameAsset(string.Format("{0}/{1}", UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME), RESOURCES_DIR_NAME);
+        AssetDatabase.RenameAsset(Path.Combine( UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME), RESOURCES_DIR_NAME);
         AssetDatabase.Refresh();
 
 		m_assetsDetailDict.Add (ASSETS_CONFIG_FILE_NAME, new AssetsDetail ( ASSETS_CONFIG_FILE_NAME, AssetsType.Resources, string.Empty, 0, 0 ));
 		m_assetsDetailDict.Add (BUNDLE_FILE_NAME, new AssetsDetail ( BUNDLE_FILE_NAME, AssetsType.Resources, string.Empty, 0, 0 ));
 
-        UpdateDetailDict();
         CreateConfigTableFile();
-        UpdateConfigTableBundleBuild();
 
         BuildAssetsBundle();
 	}
 
 	public override void DistributeAssets() 
     {
-		// assets_table
-		FileInfo fileInfo = new FileInfo (Path.Combine (BUNDLE_ASSETS_PATH, ASSETS_CONFIG_FILE_NAME));
-		fileInfo.MoveTo (Path.Combine(STREAMING_ASSETS_PATH, ASSETS_CONFIG_FILE_NAME ));
-		string manifest_file_name = ASSETS_CONFIG_FILE_NAME + ".manifest";
-		fileInfo = new FileInfo (Path.Combine (BUNDLE_ASSETS_PATH, manifest_file_name));
-		fileInfo.MoveTo (Path.Combine(STREAMING_ASSETS_PATH, manifest_file_name ));
+        MoveFile2StreamingDir(ASSETS_CONFIG_FILE_NAME); // assets_table
+        MoveFile2StreamingDir(BUNDLE_FILE_NAME);        // BundleAssets
+        AssetDatabase.Refresh();
+    }
 
-		// BundleAssets
-		fileInfo = new FileInfo (Path.Combine( BUNDLE_ASSETS_PATH, BUNDLE_FILE_NAME ));
-		fileInfo.MoveTo (Path.Combine(STREAMING_ASSETS_PATH, BUNDLE_FILE_NAME ));
-		manifest_file_name = BUNDLE_FILE_NAME + ".manifest";
-		fileInfo = new FileInfo (Path.Combine (BUNDLE_ASSETS_PATH, manifest_file_name));
-		fileInfo.MoveTo (Path.Combine(STREAMING_ASSETS_PATH, manifest_file_name ));
+    private void MoveFile2StreamingDir(string p_fileName)
+    {
+        FileInfo fileInfo = new FileInfo(Path.Combine(BUNDLE_ASSETS_PATH, p_fileName));
+        fileInfo.MoveTo(Path.Combine(STREAMING_ASSETS_PATH, p_fileName));
+        string manifest_file_name = p_fileName + ".manifest";
+        fileInfo = new FileInfo(Path.Combine(BUNDLE_ASSETS_PATH, manifest_file_name));
+        fileInfo.MoveTo(Path.Combine(STREAMING_ASSETS_PATH, manifest_file_name));
     }
 }
 

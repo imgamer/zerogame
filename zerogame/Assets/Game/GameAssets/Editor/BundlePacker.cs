@@ -14,8 +14,7 @@ public class BundlePacker : Packer
 	{
 		List<string> assetsList = new List<string> ();
 		assetsList.Add(SCENE_FILE_PATH);
-		assetsList.Add(string.Format("{0}/{1}", FIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
-		assetsList.Add(string.Format( "{0}/{1}", UNFIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
+        assetsList.Add(Path.Combine( UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME));
 		return assetsList;
 	}
 
@@ -40,5 +39,7 @@ public class BundlePacker : Packer
 		{
 			file.MoveTo(Path.Combine(STREAMING_ASSETS_PATH, file.Name ) );
 		}
+
+        AssetDatabase.Refresh();
 	}
 }
