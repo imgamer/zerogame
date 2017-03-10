@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 using System.IO;
 
@@ -9,17 +9,32 @@ public class PackTest
 	[MenuItem("BundleTools/Test")]
 	public static void Test()
 	{
-		Debug.LogWarning ("Application.dataPath:" + Application.dataPath);
+        Debug.LogError ("Application.dataPath:" + Application.dataPath);
+        Debug.LogError("Application.streamingAssetsPath:" + Application.streamingAssetsPath);
+        Debug.LogError("Application.persistentDataPath:" + Application.persistentDataPath);
+        Debug.LogError("Application.temporaryCachePath:" + Application.temporaryCachePath);
 
-		DirectoryInfo dir_info = new DirectoryInfo ("Assets/Game/GameAssets/BundleAssets");
-		FileInfo[] file_array = dir_info.GetFiles ();
-		for (int i = 0; i < file_array.Length; ++i)
-		{
-			FileInfo file = file_array[i];
-			Debug.Log("file name:" + file.Name);
-		}
+        List<string> paths = GetPaths("Assets/StreamingAssets");
+        foreach(string path in paths)
+        {
+            Debug.LogError("getPath:"+path);
+        }
 
 	}
+
+    private static List<string> GetPaths(string path)
+    {
+        List<string> ret = new List<string>();
+
+        if (string.IsNullOrEmpty(path)) return ret;
+        string[] paths = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
+        foreach (var p in paths)
+        {
+            string str = p.Replace('\\', '/');
+            ret.Add(str);
+        }
+        return ret;
+    }
 }
 
 

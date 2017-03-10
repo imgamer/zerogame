@@ -28,8 +28,7 @@ public class PackTools
 		switch (p_assetsType) 
 		{
 			case AssetsType.Local:
-				Debug.LogError ("cant find AssetsType.Local Packer.");
-				return null;
+                return new BundlePacker();
 			case AssetsType.Resources:
 				return new ResourcesPacker ();
 			default:

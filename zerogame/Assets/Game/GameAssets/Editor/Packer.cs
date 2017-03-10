@@ -97,7 +97,7 @@ public abstract class Packer
                         Debug.LogError(string.Format("资源包({0})命名不规范，必须全部小写字母。资源路径：{1}.", unityobj.name, filepath));
                         continue;
                     }
-
+                    
 					string relativePath = filepath.Replace(dirPath+"/", "");
 					AssetsDetail assetsDetail = new AssetsDetail(unityobj.name, m_assetsType, relativePath, 0, 0);
 					m_assetsDetailDict.Add(unityobj.name, assetsDetail);
@@ -139,7 +139,6 @@ public abstract class Packer
         strw.Flush();
         strw.Close();
         AssetDatabase.Refresh();
-
     }
 
     protected void UpdateConfigTableBundleBuild()
@@ -158,11 +157,13 @@ public abstract class Packer
         bundleBuildList.Add(bundleBuild);
     }
 
-    protected abstract void UpdateBundleBuild();
+    protected virtual void UpdateBundleBuild()
+    {
+        UpdateConfigTableBundleBuild();
+    }
 
     protected void BuildAssetsBundle()
     {
-        UpdateConfigTableBundleBuild();
         UpdateBundleBuild();
 
         List<AssetBundleBuild> assetBundleBuildList = new List<AssetBundleBuild>();
@@ -193,5 +194,36 @@ public abstract class Packer
         target = BuildTarget.FlashPlayer;
 #endif
         return target;
+    }
+
+    protected static List<string> GetPaths(string path)
+    {
+        List<string> ret = new List<string>();
+
+        if (string.IsNullOrEmpty(path)) return ret;
+        string[] paths = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
+        foreach (var p in paths)
+        {
+            string str = p.Replace('\\', '/');
+            ret.Add(str);
+        }
+        return ret;
+    }
+
+    protected static string GetBundleVariant()
+    {
+        string variant = string.Format("s");
+#if UNITY_ANDROID
+            variant = string.Format("a");
+#elif UNITY_IPHONE
+        variant = string.Format("i");
+#elif UNITY_WEBPLAYER
+        variant = string.Format("w");
+#elif UNITY_STANDALONE_WIN
+        variant = string.Format("s");
+#elif UNITY_FLASH
+        variant = string.Format("f");
+#endif
+        return variant;
     }
 }

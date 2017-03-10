@@ -4,7 +4,11 @@ BundleAssets	Resources		0	0
 
 play	Resources	play.unity	0	0
 
-gamepoolmgr	Resources	Models/GamePoolMgr.prefab	0	0
+gamepoolmgr	Resources	Models/gamepoolmgr.prefab	0	0
+
+d_dialogs	Resources	Configs/d_dialogs.json	0	0
+
+test	Resources	Configs/test.json	0	0
 
 knight	Resources	Models/knight.prefab	0	0
 

@@ -16,13 +16,10 @@ public class ResourcesPacker : Packer
 	{
 		List<string> assetsList = new List<string> ();
 		assetsList.Add(SCENE_FILE_PATH);
-		assetsList.Add(Path.Combine(FIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
-		assetsList.Add(Path.Combine(UNFIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
+		assetsList.Add(string.Format("{0}/{1}", FIXED_ASSETS_PATH, RESOURCES_DIR_NAME));    // 不使用Path.Combine，避免生成的字符串中有`\`
+        assetsList.Add(string.Format("{0}/{1}", UNFIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
 		return assetsList;
 	}
-
-    protected override void UpdateBundleBuild()
-    {}
 
 	protected override void SetSencesInBuild() 
     {

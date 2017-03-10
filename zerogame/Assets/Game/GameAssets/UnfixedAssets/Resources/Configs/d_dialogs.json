@@ -1,0 +1,114 @@
+{
+	"1": {
+		"1": {
+			"name": "胡喜媚",
+			"icon": "halfpic_huximei",
+			"type": "Own",
+			"content": "家主你看，好像是黄巾军的驻地。"
+		},
+		"2": {
+			"name": "玩家",
+			"icon": "halfpic_zhujue01",
+			"type": "Own",
+			"content": "桃园镇由刘备管辖，黄巾军怎么还敢在这里驻扎叛乱？"
+		},
+		"3": {
+			"name": "星彩",
+			"icon": "halfpic_xingcai",
+			"type": "Own",
+			"content": "难道是和……我们先进去探探吧！"
+		},
+		"4": {
+			"name": "玩家",
+			"icon": "halfpic_zhujue01",
+			"type": "Own",
+			"content": "恩，先去看看情况。"
+		}
+	},
+	"2": {
+		"1": {
+			"name": "黄巾步兵",
+			"icon": "halfpic_huangjinbubing",
+			"type": "Enemy",
+			"content": "站住！你们是什么人？！"
+		},
+		"2": {
+			"name": "玩家",
+			"icon": "halfpic_zhujue01",
+			"type": "Own",
+			"content": "替天行道消灭你们的人。"
+		},
+		"3": {
+			"name": "黄巾步兵",
+			"icon": "halfpic_huangjinbubing",
+			"type": "Enemy",
+			"content": "人没几个，口气到还不小。弟兄们上！"
+		}
+	},
+	"3": {
+		"1": {
+			"name": "黄巾步兵",
+			"icon": "halfpic_huangjinbubing",
+			"type": "Enemy",
+			"content": "首领，有人闯进营地了！"
+		},
+		"2": {
+			"name": "奎木狼",
+			"icon": "halfpic_kuimulang",
+			"type": "Enemy",
+			"content": "不能让他们坏了仙君的好事，把这些人拦住，杀无赦。"
+		},
+		"3": {
+			"name": "星彩",
+			"icon": "halfpic_xingcai",
+			"type": "Own",
+			"content": "什么好事，你们有什么阴谋？"
+		},
+		"4": {
+			"name": "奎木狼",
+			"icon": "halfpic_kuimulang",
+			"type": "Enemy",
+			"content": "你们还是下地狱去问阎王吧！"
+		},
+		"5": {
+			"name": "胡喜媚",
+			"icon": "halfpic_huximei",
+			"type": "Own",
+			"content": "大家小心！"
+		}
+	},
+	"4": {
+		"1": {
+			"name": "胡喜媚",
+			"icon": "halfpic_huximei",
+			"type": "Own",
+			"content": "终于到了第二关好开心啊"
+		},
+		"2": {
+			"name": "玩家",
+			"icon": "halfpic_zhujue01",
+			"type": "Own",
+			"content": "开始战斗啦"
+		},
+		"3": {
+			"name": "星彩",
+			"icon": "halfpic_xingcai",
+			"type": "Own",
+			"content": "大家准备"
+		}
+	},
+	"5": {
+		"1": {
+			"name": "黄巾步兵",
+			"icon": "halfpic_huangjinbubing",
+			"type": "Enemy",
+			"content": "大家赶紧逃命吧"
+		},
+		"2": {
+			"name": "玩家",
+			"icon": "halfpic_zhujue01",
+			"type": "Own",
+			"content": "追"
+		}
+	}
+}
