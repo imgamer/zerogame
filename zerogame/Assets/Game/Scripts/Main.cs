@@ -14,17 +14,23 @@ class Main: MonoBehaviour
 
     void Awake()
     {
-        CheckSingleton();
         Logger.Log("Game awake...");
+        CheckSingleton();
     }
 
     void Start()
     {
+        Logger.Log("Game start...");
+        
+        InitSingleton();
+
         MonoSingletonMgr.Create();
 
-        // To create C# Singleton here.
+        CheckAssets();
+    }
 
-        Logger.Log("Game start...");
+    private void CheckAssets()
+    {
     }
 
     private void CheckSingleton()
@@ -39,5 +45,10 @@ class Main: MonoBehaviour
             GameObject.Destroy(this);
             Logger.LogWarning("There is already a instance of Main created( {0} ), now destoy the new one.", m_instance.name );
         }
+    }
+
+    private void InitSingleton()
+    {
+        // To create C# Singleton here.
     }
 }
