@@ -20,8 +20,8 @@ public class BundlePacker : Packer
 	}
 
     protected void UpdateSingleBundleBuild(string p_dirPath)
-    { 
-        string dirPath = string.Format("{0}/{1}/{2}", BUNDLE_ASSETS_PATH + PACKAGES_DIR_NAME + p_dirPath);
+    {
+        string dirPath = string.Format("{0}/{1}/{2}", UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME, p_dirPath);
 
         List<AssetBundleBuild> bundleBuildList = new List<AssetBundleBuild>();
         int bundleBuildCount = 0;
@@ -63,7 +63,7 @@ public class BundlePacker : Packer
     /// <param name="p_dirName">第一层目录名</param>
     protected void UpdateGroupBundleBuild(string p_dirName)
     {
-        string dirPath = string.Format("{0}/{1}/{2}", BUNDLE_ASSETS_PATH + PACKAGES_DIR_NAME + p_dirName);
+        string dirPath = string.Format("{0}/{1}/{2}", UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME, p_dirName);
 
         List<string> groupPaths = new List<string>();
         foreach(string assetPath in GetPaths(dirPath))
