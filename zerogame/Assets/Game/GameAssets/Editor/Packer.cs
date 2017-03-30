@@ -15,7 +15,8 @@ public abstract class Packer
 	public static readonly string ASSETS_PATH = "Assets/Game/GameAssets";
 	public static readonly string UNFIXED_ASSETS_PATH = ASSETS_PATH + "/UnfixedAssets";
 	public static readonly string FIXED_ASSETS_PATH = ASSETS_PATH + "/FixedAssets";
-	public static readonly string ASSETS_CONFIG_FILE_PATH = string.Format("{0}/{1}", ASSETS_PATH, "assets_table.txt");
+    public static readonly string BUNDLE_INFO_PATH = ASSETS_PATH + "/BundleInfo";
+    public static readonly string ASSETS_CONFIG_FILE_PATH = string.Format("{0}/{1}", BUNDLE_INFO_PATH, "bundle_infos.txt");
 
 	// scene需要单独打包
 	public static readonly string SCENE_FILE_PATH = "Assets/Game/GameAssets/UnfixedAssets/Scenes";
@@ -23,7 +24,7 @@ public abstract class Packer
     public static readonly string RESOURCES_DIR_NAME = "Resources";
     public static readonly string PACKAGES_DIR_NAME = "Packages";
 
-	public static readonly string ASSETS_CONFIG_FILE_NAME = "assets_table";
+    public static readonly string ASSETS_CONFIG_FILE_NAME = "bundle_infos";
 	public static readonly string BUNDLE_FILE_NAME = "BundleAssets";   // 此文件由打包功能生成，命名和打包的目标路径目录相同
 
 	protected Dictionary<string, AssetsDetail> m_assetsDetailDict = new Dictionary<string, AssetsDetail>();

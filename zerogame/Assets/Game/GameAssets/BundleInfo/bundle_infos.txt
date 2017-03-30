@@ -1,4 +1,4 @@
-﻿assets_table	Resources		0	0
+﻿bundle_infos	Resources		0	0
 
 BundleAssets	Resources		0	0
 

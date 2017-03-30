@@ -1,0 +1,34 @@
+ManifestFileVersion: 0
+CRC: 2819193096
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 31d6fbf0eeb812e6105d16e445ffb3eb
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e5df0d4d7212daef99d60e62001b27ad
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Game/GameAssets/UnfixedAssets/Packages/Models/knight.prefab
+Dependencies: []
