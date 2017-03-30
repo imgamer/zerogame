@@ -25,32 +25,25 @@ public abstract class Packer
     public static readonly string PACKAGES_DIR_NAME = "Packages";
 
     public static readonly string ASSETS_CONFIG_FILE_NAME = "bundle_infos";
-	public static readonly string BUNDLE_FILE_NAME = "BundleAssets";   // 此文件由打包功能生成，命名和打包的目标路径目录相同
+	public static readonly string BUNDLE_FILE_NAME = "BundleAssets";   // 此文件由打包功能生成，与打包的输出目录同名
 
 	protected Dictionary<string, AssetsDetail> m_assetsDetailDict = new Dictionary<string, AssetsDetail>();
-    protected Dictionary<AssetsType, List<AssetBundleBuild>> m_buildAssetsBundleDict = new Dictionary<AssetsType, List<AssetBundleBuild>>();
 
     protected AssetsType m_assetsType = AssetsType.Resources;
 
-    // 区分了不同打包资源的类型目前最大的作用是方便调试时查看数据
-    protected Dictionary<AssetsType, List<AssetBundleBuild>> m_bundleBuildDict = new Dictionary<AssetsType, List<AssetBundleBuild>>();
-	
-	public void PreparePack()
+    protected List<AssetBundleBuild> m_bundleBuildList = new List<AssetBundleBuild>();
+
+	public void Prepare()
     {
         SetSencesInBuild();
         ResetAssets();
         RenameResourceDir();
     }
     
-	public void PackAssets()
-    {
-        CreateConfigTableFile();
-        BuildAssetsBundle();
-    }
 	public abstract void DistributeAssets();
 
     protected abstract void SetSencesInBuild();
-    protected abstract List<string> GetAssetsPaths();
+
     protected abstract void RenameResourceDir();
 
     /// <summary>
@@ -61,6 +54,12 @@ public abstract class Packer
         DirectoryInfo streamingAssetsDir = new DirectoryInfo( STREAMING_ASSETS_PATH );
         foreach( FileInfo file in streamingAssetsDir.GetFiles() )
         {
+            if (file.Name.Split(new char[] { '.' })[0] == ASSETS_CONFIG_FILE_NAME)
+            {
+                file.MoveTo(Path.Combine(BUNDLE_INFO_PATH, file.Name));
+                continue;
+            }
+
             file.MoveTo(Path.Combine(BUNDLE_ASSETS_PATH, file.Name));
         }
 
@@ -72,13 +71,15 @@ public abstract class Packer
 
         AssetDatabase.Refresh();
     }
-
+	
 	protected void UpdateDetailDict()
 	{
+        // 2个固有bundle包的信息
         m_assetsDetailDict.Add(ASSETS_CONFIG_FILE_NAME, new AssetsDetail(ASSETS_CONFIG_FILE_NAME, m_assetsType, string.Empty, 0, 0));
         m_assetsDetailDict.Add(BUNDLE_FILE_NAME, new AssetsDetail(BUNDLE_FILE_NAME, m_assetsType, string.Empty, 0, 0));
 
-        foreach (string dirPath in GetAssetsPaths().ToArray())
+        // Resources资源信息
+        foreach (string dirPath in GetResourcesAssetsPaths().ToArray())
         {
             List<string> filepaths = GetAssetsPathsByDir(dirPath);
             foreach (string filepath in filepaths)
@@ -105,6 +106,21 @@ public abstract class Packer
                 }
             }
         }
+
+        // Bundle包资源信息
+        foreach(AssetBundleBuild bundleBuild in m_bundleBuildList)
+        {
+            string name = bundleBuild.assetBundleName;  // 名字必须全部小写
+
+            string nameAndVariant = string.Format("{0}.{1}", bundleBuild.assetBundleName, bundleBuild.assetBundleVariant);
+            string path = string.Format(string.Format("{0}/{1}", BUNDLE_ASSETS_PATH, nameAndVariant));
+            uint crc;
+            BuildPipeline.GetCRCForAssetBundle(path, out crc);
+            FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read);
+            AssetsDetail detail = new AssetsDetail(name, m_assetsType, nameAndVariant, crc, (int)file.Length);
+            file.Close();
+            m_assetsDetailDict.Add(name, detail);
+        }
 	}
 
 	protected List<string> GetAssetsPathsByDir( string p_dirpath )
@@ -123,7 +139,7 @@ public abstract class Packer
 		return paths;
 	}
 
-    protected void CreateConfigTableFile()
+    protected void CreateBundleInfoFile()
     {
         UpdateDetailDict();
 
@@ -142,42 +158,37 @@ public abstract class Packer
         AssetDatabase.Refresh();
     }
 
-    protected void UpdateConfigTableBundleBuild()
-    {
-        List<AssetBundleBuild> bundleBuildList;
-		m_buildAssetsBundleDict.TryGetValue(m_assetsType, out bundleBuildList);
-        if(bundleBuildList == null)
-        {
-            bundleBuildList = new List<AssetBundleBuild>();
-			m_buildAssetsBundleDict.Add(m_assetsType, bundleBuildList);
-        }
+    protected abstract List<string> GetResourcesAssetsPaths();
 
+    protected abstract List<string> GetBundleAssetsPaths();
+	
+    public virtual void BuildAssetsBundle()
+    {
+        CollectBundleBuildInfo();   // 收集信息到m_bundleBuildList
+
+        string bundleLocalPath = Application.dataPath.Replace("/Assets", "/") + BUNDLE_ASSETS_PATH;
+        BuildTarget buildTarget = GetBuildTarget();
+        BuildPipeline.BuildAssetBundles(bundleLocalPath, m_bundleBuildList.ToArray(), BuildAssetBundleOptions.None, buildTarget);
+
+        AssetDatabase.Refresh();
+    }
+
+    public virtual void BuildBundleInfoFile()
+    {
+        CreateBundleInfoFile();
+
+        string bundleLocalPath = Application.dataPath.Replace("/Assets", "/") + BUNDLE_INFO_PATH;
+        BuildTarget buildTarget = GetBuildTarget();
         AssetBundleBuild bundleBuild = new AssetBundleBuild();
         bundleBuild.assetBundleName = ASSETS_CONFIG_FILE_NAME;
         bundleBuild.assetNames = new string[] { ASSETS_CONFIG_FILE_PATH };
-        bundleBuildList.Add(bundleBuild);
-    }
-
-    protected virtual void UpdateBundleBuild()
-    {
-        UpdateConfigTableBundleBuild();
-    }
-
-    protected void BuildAssetsBundle()
-    {
-        UpdateBundleBuild();
-
-        List<AssetBundleBuild> assetBundleBuildList = new List<AssetBundleBuild>();
-        foreach( List<AssetBundleBuild> bundleBuilds in m_buildAssetsBundleDict.Values )
-        {
-            assetBundleBuildList.AddRange(bundleBuilds);
-        }
-
-		string bundleLocalPath = Application.dataPath.Replace("/Assets","/") + BUNDLE_ASSETS_PATH;
-        BuildTarget buildTarget = GetBuildTarget();
-        BuildPipeline.BuildAssetBundles(bundleLocalPath, assetBundleBuildList.ToArray(), BuildAssetBundleOptions.None, buildTarget );
+        BuildPipeline.BuildAssetBundles(bundleLocalPath, new AssetBundleBuild[] { bundleBuild }, BuildAssetBundleOptions.None, buildTarget);
 
         AssetDatabase.Refresh();
+    }
+
+    protected virtual void CollectBundleBuildInfo()
+    {
     }
 
     private static BuildTarget GetBuildTarget()

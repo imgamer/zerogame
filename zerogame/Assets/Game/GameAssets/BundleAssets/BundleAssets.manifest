@@ -1,0 +1,9 @@
+ManifestFileVersion: 0
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: knight.s
+      Dependencies: {}
+    Info_1:
+      Name: configs.s
+      Dependencies: {}

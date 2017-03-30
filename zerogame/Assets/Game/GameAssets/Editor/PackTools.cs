@@ -29,6 +29,7 @@ public class PackTools
 		Pack (AssetsType.Local);
 
         EditorUtility.DisplayDialog("完成", "资源打包完成，请检查Console窗口是否有错误提示", "OK");
+		EditorUtility.DisplayDialog("提示", "记得切换回Resources打包方式，再进行更新", "OK");
 	}
 
 	[MenuItem("BundleTools/Network Bunlde方式打包")]

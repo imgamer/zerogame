@@ -11,17 +11,28 @@ public class BundlePacker : Packer
         m_assetsType = AssetsType.Local;
     }
 
-	protected override List<string> GetAssetsPaths()
-	{
-		List<string> assetsList = new List<string> ();
-		assetsList.Add(SCENE_FILE_PATH);
-        assetsList.Add(Path.Combine( UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME));
-		return assetsList;
-	}
-
-    protected void UpdateSingleBundleBuild(string p_dirPath)
+    protected override List<string> GetBundleAssetsPaths()
     {
-        string dirPath = string.Format("{0}/{1}/{2}", UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME, p_dirPath);
+        List<string> assetsList = new List<string>();
+        assetsList.Add(SCENE_FILE_PATH);
+        assetsList.Add(Path.Combine(UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME));
+        return assetsList;
+    }
+
+    protected override List<string> GetResourcesAssetsPaths()
+    {
+        List<string> assetsList = new List<string>();
+        assetsList.Add(Path.Combine(FIXED_ASSETS_PATH, RESOURCES_DIR_NAME));
+        return assetsList;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+	/// <param name="p_dirName">此目录中的每个资源都生成一个bundle包</param>
+    protected void UpdateSingleBundleBuild(string p_dirName)
+    {
+        string dirPath = string.Format("{0}/{1}/{2}", UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME, p_dirName);
 
         List<AssetBundleBuild> bundleBuildList = new List<AssetBundleBuild>();
         int bundleBuildCount = 0;
@@ -41,26 +52,19 @@ public class BundlePacker : Packer
         }
         if(bundleBuildCount == 0)
         {
-            Debug.LogWarning(string.Format("BundlePacker::UpdateSingleBundleBuild:{0}没有资源用于打包bundle。", p_dirPath));
+            Debug.LogWarning(string.Format("BundlePacker::UpdateSingleBundleBuild:{0}没有资源用于打包bundle。", p_dirName));
             return;
         }
 
-        Debug.LogWarning(string.Format("BundlePacker::UpdateSingleBundleBuild:bundle数量{0}。", p_dirPath));
-        List<AssetBundleBuild> alreadyBundleBuild;
-        if (!m_buildAssetsBundleDict.TryGetValue(m_assetsType, out alreadyBundleBuild))
-        {
-            m_buildAssetsBundleDict[m_assetsType] = bundleBuildList;
-        }
-        else
-        {
-            alreadyBundleBuild.AddRange(bundleBuildList);
-        }
+        Debug.LogWarning(string.Format("BundlePacker::UpdateSingleBundleBuild:bundle数量{0}。", bundleBuildCount));
+        m_bundleBuildList.AddRange(bundleBuildList);
+
     }
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="p_dirName">第一层目录名</param>
+	/// <param name="p_dirName">第一层目录名，把此目录中的所有资源打包成一个bundle</param>
     protected void UpdateGroupBundleBuild(string p_dirName)
     {
         string dirPath = string.Format("{0}/{1}/{2}", UNFIXED_ASSETS_PATH, PACKAGES_DIR_NAME, p_dirName);
@@ -79,27 +83,20 @@ public class BundlePacker : Packer
             return;
         }
 
-        List<AssetBundleBuild> alreadyBundleBuilds;
-        if( !m_buildAssetsBundleDict.TryGetValue(m_assetsType, out alreadyBundleBuilds) )
-        {
-            alreadyBundleBuilds = new List<AssetBundleBuild>();
-            m_buildAssetsBundleDict[m_assetsType] = alreadyBundleBuilds;
-        }
-
         AssetBundleBuild bundleBuild = new AssetBundleBuild();
         bundleBuild.assetBundleName = p_dirName.ToLower();
         bundleBuild.assetBundleVariant = GetBundleVariant();
         bundleBuild.assetNames = groupPaths.ToArray();
-        alreadyBundleBuilds.Add(bundleBuild);
+        m_bundleBuildList.Add(bundleBuild);
     }
 
     protected void UpdateShareBunldeBuild(string p_dirName)
     { }
 
-    protected override void UpdateBundleBuild()
+    protected override void CollectBundleBuildInfo()
     {
-        base.UpdateBundleBuild();
-        // todo：打包资源目录需要改成可配置
+        //base.CollectBundleBuildInfo();
+        // TODO(@wangshufeng)：打包资源目录需要改成可配置
         UpdateSingleBundleBuild("Models");
         UpdateGroupBundleBuild("Configs");
     }
@@ -127,6 +124,11 @@ public class BundlePacker : Packer
 			file.MoveTo(Path.Combine(STREAMING_ASSETS_PATH, file.Name ) );
 		}
 
+        FileInfo fileInfo = new FileInfo(Path.Combine(BUNDLE_INFO_PATH, ASSETS_CONFIG_FILE_NAME));
+        fileInfo.MoveTo(Path.Combine(STREAMING_ASSETS_PATH, fileInfo.Name));
+        string manifest_file_name = string.Format("{0}.{1}", ASSETS_CONFIG_FILE_NAME, "manifest");
+        fileInfo = new FileInfo(Path.Combine(BUNDLE_INFO_PATH, manifest_file_name));
+        fileInfo.MoveTo(Path.Combine(STREAMING_ASSETS_PATH, fileInfo.Name));
         AssetDatabase.Refresh();
 	}
 }

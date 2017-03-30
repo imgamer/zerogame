@@ -12,8 +12,9 @@ public class PackDirector
 
 	public void Pack()
 	{
-        m_packer.PreparePack();
-		m_packer.PackAssets();
+        m_packer.Prepare();
+        m_packer.BuildAssetsBundle();
+        m_packer.BuildBundleInfoFile();
 		m_packer.DistributeAssets();
 	}
 

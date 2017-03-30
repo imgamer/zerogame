@@ -10,14 +10,17 @@ public class PackTest
 	public static void Test()
 	{
         Debug.LogError ("Application.dataPath:" + Application.dataPath);
+        Debug.LogError("Application.dataPath:!/assets" + Application.dataPath + "!/Assets/");
+
         Debug.LogError("Application.streamingAssetsPath:" + Application.streamingAssetsPath);
-        Debug.LogError("Application.persistentDataPath:" + Application.persistentDataPath);
-        Debug.LogError("Application.temporaryCachePath:" + Application.temporaryCachePath);
+
+        //Debug.LogError("Application.persistentDataPath:" + Application.persistentDataPath);
+        //Debug.LogError("Application.temporaryCachePath:" + Application.temporaryCachePath);
 
         List<string> paths = GetPaths("Assets/StreamingAssets");
         foreach(string path in paths)
         {
-            Debug.LogError("getPath:"+path);
+            //Debug.LogError("getPath:"+path);
         }
 
 	}
