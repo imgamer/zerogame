@@ -35,17 +35,17 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T>
         OnInit();
     }
 
-    private void Uninit()
+    private void Finish()
     {
-        OnUninit();
+        OnFinish();
     }
 
     public static void Destroy()
     {
         if (m_instance == null) return;
-        m_instance.Uninit();
+        m_instance.Finish();
     }
 
     protected abstract void OnInit();
-    protected abstract void OnUninit();
+    protected abstract void OnFinish();
 }
