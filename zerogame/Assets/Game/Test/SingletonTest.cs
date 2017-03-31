@@ -7,4 +7,10 @@ public class SingletonTest : Singleton<SingletonTest>
     {
         Logger.Log("SingletonTest::SingletonTest.....");
     }
+
+	protected override void OnInit()
+	{}
+
+	protected override void OnFinish()
+	{}
 }

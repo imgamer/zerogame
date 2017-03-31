@@ -30,6 +30,11 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T>
         }
     }
 
+	public void OnDestroy()
+	{
+		Finish ();
+	}
+
     private void Init()
     {
         OnInit();

@@ -6,15 +6,21 @@ using System.Collections;
 namespace TestDelegate
 {
 
-    class TestEventArg : EventArgs
-    {
+class TestEventArg : EventArgs
+{
 
-    }
+}
 
-    public class TestEventMgr : Singleton<TestEventMgr>
-    {
+public class TestEventMgr : Singleton<TestEventMgr>
+{
+	protected override void OnInit()
+	{}
+	
+	protected override void OnFinish()
+	{}
+
+}
 
 
-    }
 
 }   // end namesapce TestDelegate
