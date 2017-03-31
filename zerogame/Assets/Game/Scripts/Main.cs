@@ -23,9 +23,6 @@ class Main: MonoBehaviour
         Logger.Log("Game start...");
         
         InitSingleton();
-
-        MonoSingletonMgr.Create();
-
         CheckAssets();
     }
 
@@ -50,5 +47,6 @@ class Main: MonoBehaviour
     private void InitSingleton()
     {
         // To create C# Singleton here.
+		MonoSingletonMgr.Create();
     }
 }

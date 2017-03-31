@@ -2,49 +2,16 @@
 using System;
 using System.Collections;
 
-
 // 维护全局组件容器"Singleton"游戏对象
-public class MonoSingletonMgr
+public class MonoSingletonMgr: Singleton<MonoSingletonMgr>
 {
 	public static readonly string SINGLETON_GAMEOBJECT_NAME = "Singleton";
 
-	private static MonoSingletonMgr m_instance;
 	private static GameObject m_singleton;
 
-	private MonoSingletonMgr()
+	public MonoSingletonMgr()
 	{
 		Logger.Log("MonoSingletonMgr constructed...");
-	}
-
-	public static void Create()
-	{
-		if (m_instance == null) 
-		{
-			m_instance = new MonoSingletonMgr();
-
-			GameObject singleton = GameObject.Find(SINGLETON_GAMEOBJECT_NAME);
-			if(singleton == null)
-			{
-				singleton = new GameObject(SINGLETON_GAMEOBJECT_NAME);
-                MonoSingletonMgr.m_singleton = singleton;
-				GameObject.DontDestroyOnLoad(singleton);
-			}
-
-            m_instance.InitSingleton();
-		}
-	}
-
-	public static MonoSingletonMgr Instance
-	{
-		get
-		{
-			if(m_instance == null)
-			{
-				Create();
-			}
-
-			return MonoSingletonMgr.m_instance;
-		}
 	}
 
     public T AddSingletonComponent<T>() where T: Component
@@ -56,6 +23,22 @@ public class MonoSingletonMgr
         }
         return t;
     }
+
+	protected override void OnInit()
+	{
+		GameObject singleton = GameObject.Find(SINGLETON_GAMEOBJECT_NAME);
+		if(singleton == null)
+		{
+			singleton = new GameObject(SINGLETON_GAMEOBJECT_NAME);
+			MonoSingletonMgr.m_singleton = singleton;
+			GameObject.DontDestroyOnLoad(singleton);
+		}
+		
+		InitSingleton();
+	}
+	
+	protected override void OnFinish()
+	{}
 
 	private void InitSingleton()
 	{

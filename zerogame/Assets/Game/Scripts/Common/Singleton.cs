@@ -10,7 +10,7 @@ public abstract class Singleton<T> where T : Singleton<T>, new()
     {
         Debug.Assert(m_instance == null);
         m_instance = (T)this;
-        Logger.Log("Singleton({0}) init....", this.ToString());
+		m_instance.Init();
     }
 
 	~Singleton()
@@ -23,7 +23,6 @@ public abstract class Singleton<T> where T : Singleton<T>, new()
         if( m_instance == null )
         {
             m_instance = new T();
-			m_instance.Init();
         }
     }
 
@@ -41,11 +40,13 @@ public abstract class Singleton<T> where T : Singleton<T>, new()
 
 	private void Init()
 	{
+		Logger.Log("Singleton({0}) init....", this.ToString());
 		OnInit ();
 	}
 
 	private void Finish()
 	{
+		Logger.Log("Singleton({0}) Finish....", this.ToString());
 		OnFinish ();
 	}
 
