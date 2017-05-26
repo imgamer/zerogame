@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-struct LoadAssetInfo
+class LoadAssetInfo
 {
-	 
 	public string m_assetName;
 	public GameObject m_gameObject;
 }
+
 
 public class AssetsRequest
 {
@@ -14,8 +14,8 @@ public class AssetsRequest
 
     public void OnAssetsLoaded( string p_assetsName, GameObject p_gameObject )
     {
-		m_requestAssets [p_assetsName].m_gameObject = p_gameObject;
-		if (IsAllAssetsLoaded)
+        m_requestAssets[p_assetsName].m_gameObject = p_gameObject;
+        if (IsAllAssetsLoaded())
 			;
 	}
 
