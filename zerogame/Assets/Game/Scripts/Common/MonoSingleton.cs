@@ -4,8 +4,8 @@ using System.Collections;
 // 1. 组件创建策略
 // 2. singleton模式实现
 // 3. 初始化和反初始化流程
-public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T> {
-
+public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T> 
+{
     private static T m_instance = null;
     //private bool _inited = false;
 
