@@ -29,8 +29,23 @@ public class UIManager : MonoBehaviour {
     { 
     }
 
+    private GameObject GetUI(string p_uiPath)
+    {
+        return null;
+    }
+
     public void OpenUI(string p_uiPath)
     {
+        GameObject ui = GetUI(p_uiPath);
+        if(ui == null)
+        {
+            Debug.LogError("UIManager::OpenUI:can open ui:" + p_uiPath);
+            return;
+        }
+
+        ui.GetComponent<RectTransform>().SetParent(transform, false);
+        UIWindow uiwin = ui.GetComponent<UIWindow>();
+        uiwin.Init();
     }
 
     public void CloseUI(string p_uiPath)
