@@ -1,0 +1,20 @@
+﻿<Properties StartupConfiguration="{1D244657-EDD5-6398-018D-30B8E2FEE299}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Game/GameAssets/Editor/Packer.cs">
+    <Files>
+      <File FileName="Assets/Game/GameAssets/Editor/PackTools.cs" Line="59" Column="14" />
+      <File FileName="Assets/Game/GameAssets/Editor/PackDirector.cs" Line="15" Column="21" />
+      <File FileName="Assets/Game/GameAssets/Editor/AssetsDefine.cs" Line="1" Column="1" />
+      <File FileName="Assets/Game/GameAssets/Editor/BundlePacker.cs" Line="1" Column="1" />
+      <File FileName="Assets/Game/GameAssets/Editor/PackTest.cs" Line="26" Column="3" />
+      <File FileName="Assets/Game/GameAssets/Editor/ResourcesPacker.cs" Line="1" Column="1" />
+      <File FileName="Assets/Game/GameAssets/Editor/Packer.cs" Line="21" Column="16" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.zerogame PreferredExecutionTarget="Unity.Editor" />
+  <MultiItemStartupConfigurations />
+</Properties>
